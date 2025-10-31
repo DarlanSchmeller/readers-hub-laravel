@@ -20,7 +20,15 @@ class BookController extends Controller
             fn($query, $title) => $query->title($title)
         )->paginate(9);
 
-        return view('books.index', ['books' => $books]);
+        $filters = [
+            '' => 'Latest',
+            'popular_last_month' => 'Popular',
+            'popular_last_6months' => 'Popular Last 6 Months',
+            'highest_rated_last_months' => 'Highest Rated Last Month',
+            'highest_rated_last_6months' => 'Highest Rated Last 6 Months'
+        ];
+
+        return view('books.index', ['books' => $books, 'filters' => $filters]);
     }
 
     /**

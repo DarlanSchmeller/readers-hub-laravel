@@ -4,10 +4,23 @@
     <h1 class="mb-10 text-2xl">Books</h1>
 
     <form method="GET" action="{{ route('books.index') }}" class="mb-4 flex flex-row items-center space-x-2">
-        <input type="text" name="title" id="title" placeholder="Search by title" value="{{ request('title') }}" class="input" />
+        <input type="text" name="title" id="title" placeholder="Search by title" value="{{ request('title') }}"
+            class="input" />
         <button type="submit" class="btn">Search</button>
         <a href="{{ route('books.index') }}" class="btn">Clear</a>
+        <input type="hidden" name="filter" value="{{ request('filter') }}">
     </form>
+
+    <div class="filter-container mb-4 flex">
+        @foreach ($filters as $key => $label)
+            <a href="{{ route('books.index', [...request()->query(), 'filter' => $key]) }}"
+                class="{{ request('filter') === $key || (request('filter') === null && $key === '')
+                    ? 'filter-item-active'
+                    : 'filter-item' }}">
+                {{ $label }}
+            </a>
+        @endforeach
+    </div>
 
     <ul>
         @forelse($books as $book)
