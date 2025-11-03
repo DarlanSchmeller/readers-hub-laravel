@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class BookController extends Controller
 {
@@ -38,7 +39,8 @@ class BookController extends Controller
             default => $books->latest()
         };
         
-        $books = $books->paginate();
+        $cacheKey = 'books:' . $filter . ':' . $title;
+        $books = Cache::remember($cacheKey, 3600, fn() => $books->paginate());
 
         return view('books.index', ['books' => $books, 'filters' => $filters]);
     }
