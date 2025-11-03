@@ -51,6 +51,6 @@
             </li>
         @endforelse
 
-        {{ $books->links() }}
+        {{ $books->appends(request()->query())->links() }}
     </ul>
 @endsection
